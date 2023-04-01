@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.douban.com/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+pyqt5 = "*"
+pyqt5-tools = "*"
+qdarkstyle = "*"
+qtawesome = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+python_full_version = "3.8.0"
