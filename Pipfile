@@ -9,6 +9,7 @@ pyqt5 = "*"
 pyqt5-tools = "*"
 qdarkstyle = "*"
 qtawesome = "*"
+qt-material = "*"
 
 [dev-packages]
 
