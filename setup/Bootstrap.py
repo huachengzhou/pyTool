@@ -4,10 +4,12 @@ from PyQt5 import QtCore
 from qt_material import apply_stylesheet
 from means import MyFILE, MyFORMAT, MyOFFICE
 from uiqt import MyFILE_UI, MyFORMAT_UI, MyOFFICE_UI
+from params import BaseConstant
 
 
 class MyWindow(QMainWindow):
     typeCount = 0
+
     # 窗口关闭按钮事件
     def closeEvent(self, event):
         """Shuts down application on close."""
@@ -18,6 +20,27 @@ class MyWindow(QMainWindow):
         else:
             event.ignore()
 
+    # 设置参数
+    def settingMaximiz(self, num):
+        if num < 1:
+            available = self.desk.availableGeometry()
+            center_pointer = available.center()
+            rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * BaseConstant.paramX1),
+                                int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY1),
+                                int(available.width() * BaseConstant.paramW1),
+                                int(available.height() * BaseConstant.paramH1))
+            self.stackedLayout.setGeometry(rect)
+        else:
+            available = self.desk.availableGeometry()
+            center_pointer = available.center()
+            rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * BaseConstant.paramX2),
+                                int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY2),
+                                int(available.width() * BaseConstant.paramW2),
+                                int(available.height() * BaseConstant.paramH2))
+            self.stackedLayout.setGeometry(rect)
+            pass
+        pass
+
     # main 窗口事件
     def changeEvent(self, e):
         if e.type() == QtCore.QEvent.WindowStateChange:
@@ -25,33 +48,15 @@ class MyWindow(QMainWindow):
                 typeCount = -1
                 print("窗口最小化")
             elif self.isMaximized():
-                available = self.desk.availableGeometry()
-                center_pointer = available.center()
-                rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 0.99),
-                                    int(center_pointer.y() - center_pointer.y() * 0.9),
-                                    int(available.width() * 0.98),
-                                    int(available.height() * 0.9))
-                self.stackedLayout.setGeometry(rect)
+                self.settingMaximiz(1)
                 typeCount = 1
                 print("窗口最大化")
             elif self.isFullScreen():
-                available = self.desk.availableGeometry()
-                center_pointer = available.center()
-                rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 0.99),
-                                    int(center_pointer.y() - center_pointer.y() * 0.9),
-                                    int(available.width() * 0.98),
-                                    int(available.height() * 0.9))
-                self.stackedLayout.setGeometry(rect)
+                self.settingMaximiz(2)
                 typeCount = 2
                 print("全屏显示")
             elif self.isActiveWindow():
-                available = self.desk.availableGeometry()
-                center_pointer = available.center()
-                rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 1),
-                                    int(center_pointer.y() - center_pointer.y() * 0.9),
-                                    int(available.width() * 0.7),
-                                    int(available.height() * 0.64))
-                self.stackedLayout.setGeometry(rect)
+                self.settingMaximiz(-1)
                 typeCount = 1
                 print("活动窗口")
 
@@ -69,7 +74,6 @@ class MyWindow(QMainWindow):
         # self.setGeometry(200, 200, 500, 400)
         available = desk.availableGeometry()
         center_pointer = available.center()
-
         self.setGeometry(int(center_pointer.x() - center_pointer.x() * 0.7),
                          int(center_pointer.y() - center_pointer.y() * 0.7),
                          int(available.width() * 0.7),
@@ -87,7 +91,6 @@ class MyWindow(QMainWindow):
 
         stackedLayout.setCurrentIndex(0)
         print(int_a, int_b, int_c)
-
         available = desk.availableGeometry()
         center_pointer = available.center()
         rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 1.0),
@@ -95,47 +98,33 @@ class MyWindow(QMainWindow):
                             int(available.width() * 0.7),
                             int(available.height() * 0.64))
         stackedLayout.setGeometry(rect)
-
         self.setLayout(stackedLayout)
-        return [int_a,int_b,int_c]
+        return [int_a, int_b, int_c]
 
     def setupMean(self):
         menubar = self.menuBar()
 
         meanA = MyFILE.toMean(self)
-        meanA.triggered.connect(lambda checked: self.changeMenuEvent(checked,0))
+        meanA.triggered.connect(lambda checked: self.changeMenuEvent(checked, 0))
         menubar.addMenu(meanA)
 
         meanB = MyFORMAT.toMean(self)
-        meanB.triggered.connect(lambda checked: self.changeMenuEvent(checked,1))
+        meanB.triggered.connect(lambda checked: self.changeMenuEvent(checked, 1))
         menubar.addMenu(meanB)
 
         meanC = MyOFFICE.toMean(self)
-        meanC.triggered.connect(lambda checked: self.changeMenuEvent(checked,2))
+        meanC.triggered.connect(lambda checked: self.changeMenuEvent(checked, 2))
         menubar.addMenu(meanC)
 
         print(meanA, meanB, meanC)
 
-
-    def changeMenuEvent(self, state,currentIndex):
+    def changeMenuEvent(self, state, currentIndex):
         self.stackedLayout.setCurrentIndex(currentIndex)
         if MyWindow.typeCount == 1:
-            available = self.desk.availableGeometry()
-            center_pointer = available.center()
-            rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 1),
-                                int(center_pointer.y() - center_pointer.y() * 0.9),
-                                int(available.width() * 0.7),
-                                int(available.height() * 0.64))
-            self.stackedLayout.setGeometry(rect)
+            self.settingMaximiz(-1)
             pass
         else:
-            available = self.desk.availableGeometry()
-            center_pointer = available.center()
-            rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 0.99),
-                                int(center_pointer.y() - center_pointer.y() * 0.9),
-                                int(available.width() * 0.98),
-                                int(available.height() * 0.9))
-            self.stackedLayout.setGeometry(rect)
+            self.settingMaximiz(1)
             pass
         print("changeMenuEvent", state)
 
