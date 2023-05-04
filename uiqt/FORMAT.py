@@ -6,7 +6,7 @@ import re as reUtils
 
 class MyWindow(QWidget):
 
-    def __init__(self, parent=None, title="sdhsdhsd"):
+    def __init__(self, parent=None, title=""):
         super().__init__()
         if parent != None:
             self.setParent(parent)
