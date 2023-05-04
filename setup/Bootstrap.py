@@ -119,13 +119,13 @@ class MyWindow(QMainWindow):
         print(meanA, meanB, meanC)
 
     def changeMenuEvent(self, state, currentIndex):
-        self.stackedLayout.setCurrentIndex(currentIndex)
         if MyWindow.typeCount == 1:
-            self.settingMaximiz(-1)
-            pass
-        else:
             self.settingMaximiz(1)
             pass
+        else:
+            self.settingMaximiz(-1)
+            pass
+        self.stackedLayout.setCurrentIndex(currentIndex)
         print("changeMenuEvent", state)
 
     pass
