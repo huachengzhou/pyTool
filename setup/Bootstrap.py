@@ -89,7 +89,7 @@ class MyWindow(QMainWindow):
         int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(self))
         int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(self))
 
-        stackedLayout.setCurrentIndex(0)
+        stackedLayout.setCurrentIndex(1)
         print(int_a, int_b, int_c)
         available = desk.availableGeometry()
         center_pointer = available.center()
