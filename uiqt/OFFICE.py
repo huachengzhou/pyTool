@@ -1,5 +1,5 @@
 import sys as sysUtils
-from PyQt5.QtWidgets import QApplication, QWidget, QTextEdit, QVBoxLayout, QSplitter
+from PyQt5.QtWidgets import QApplication, QWidget, QTextEdit, QVBoxLayout, QSplitter,QWidget
 from PyQt5.QtCore import Qt
 
 class MyWindow(QWidget):
@@ -21,9 +21,9 @@ class MyWindow(QWidget):
         # 水平线分割
         hSplitter.setOrientation(Qt.Horizontal)
         aFrame = QTextEdit()
-        bFrame = QTextEdit()
+        bFrame = QWidget()
         aFrame.setPlainText("a")
-        bFrame.setPlainText("b")
+
 
         hSplitter.addWidget(aFrame)
         hSplitter.addWidget(bFrame)

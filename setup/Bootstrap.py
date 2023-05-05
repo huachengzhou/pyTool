@@ -1,5 +1,5 @@
 import sys as sysUtils
-from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QDesktopWidget, QMessageBox, QAction
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QDesktopWidget, QMessageBox,QVBoxLayout,QWidget,QPushButton,QHBoxLayout
 from PyQt5 import QtCore
 from qt_material import apply_stylesheet
 from means import MyFILE, MyFORMAT, MyOFFICE
@@ -31,8 +31,12 @@ class MyWindow(QMainWindow):
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY1),
                                 BaseConstant.paramWidth,
                                 BaseConstant.paramHeight)
+
+            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY, BaseConstant.paramWidth,
+                               BaseConstant.paramHeight / 10)
+            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + 10,
+                               BaseConstant.paramWidth, BaseConstant.paramHeight)
             self.stackedLayout.setGeometry(rect)
-            print(BaseConstant.paramWidth,BaseConstant.paramHeight)
         else:
             available = self.desk.availableGeometry()
             center_pointer = available.center()
@@ -42,6 +46,10 @@ class MyWindow(QMainWindow):
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY2),
                                 BaseConstant.paramWidth,
                                 BaseConstant.paramHeight)
+            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY, BaseConstant.paramWidth,
+                                    BaseConstant.paramHeight / 10)
+            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + 10,
+                                    BaseConstant.paramWidth, BaseConstant.paramHeight)
             self.stackedLayout.setGeometry(rect)
         pass
 
@@ -85,20 +93,47 @@ class MyWindow(QMainWindow):
         self.show()
 
     def setupUi(self, desk):
-        stackedLayout = QStackedLayout()
         available = desk.availableGeometry()
         center_pointer = available.center()
-        self.stackedLayout = stackedLayout
 
         BaseConstant.paramWidth = int(available.width() * BaseConstant.paramW1)
         BaseConstant.paramHeight = int(available.height() * BaseConstant.paramH1)
         BaseConstant.paramX = int(center_pointer.x() - center_pointer.x() * 1.0)
         BaseConstant.paramY = int(center_pointer.y() - center_pointer.y() * 0.9)
 
+        aFrame = QWidget(self)
+        bFrame = QWidget(self)
+        # aFrame.setStyleSheet("background-color:red;")
+        # bFrame.setStyleSheet("background-color:blue;")
+        aFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY,BaseConstant.paramWidth,BaseConstant.paramHeight/10)
+        print(BaseConstant.paramX/6,BaseConstant.paramHeight/10)
+        bFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY+BaseConstant.paramHeight/10+10,BaseConstant.paramWidth,BaseConstant.paramHeight)
+
+        hBox = QHBoxLayout()
+        for xx in range(1,10):
+            btn1 = QPushButton(str(xx))
+            hBox.addWidget(btn1)
+            hBox.addStretch(2)
+            pass
+
+        aFrame.setLayout(hBox)
+        # dssdh
+
+        layout = QVBoxLayout()
+
+        layout.addWidget(aFrame)
+        # layout.addStretch(1)
+        layout.addWidget(bFrame)
+        # layout.addStretch(2)
+
+        stackedLayout = QStackedLayout()
+        self.stackedLayout = stackedLayout
+        self.aFrame = aFrame
+        self.bFrame = bFrame
         # 创建单独的Widget
-        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
-        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
-        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
 
         stackedLayout.setCurrentIndex(1)
         print(int_a, int_b, int_c)
@@ -108,7 +143,9 @@ class MyWindow(QMainWindow):
                             BaseConstant.paramWidth,
                             BaseConstant.paramHeight)
         stackedLayout.setGeometry(rect)
-        self.setLayout(stackedLayout)
+        bFrame.setLayout(stackedLayout)
+
+        self.setLayout(layout)
         return [int_a, int_b, int_c]
 
     def setupMean(self):
