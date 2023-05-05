@@ -25,20 +25,24 @@ class MyWindow(QMainWindow):
         if num < 1:
             available = self.desk.availableGeometry()
             center_pointer = available.center()
+            BaseConstant.paramWidth = int(available.width() * BaseConstant.paramW1)
+            BaseConstant.paramHeight = int(available.height() * BaseConstant.paramH1)
             rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * BaseConstant.paramX1),
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY1),
-                                int(available.width() * BaseConstant.paramW1),
-                                int(available.height() * BaseConstant.paramH1))
+                                BaseConstant.paramWidth,
+                                BaseConstant.paramHeight)
             self.stackedLayout.setGeometry(rect)
+            print(BaseConstant.paramWidth,BaseConstant.paramHeight)
         else:
             available = self.desk.availableGeometry()
             center_pointer = available.center()
+            BaseConstant.paramWidth = int(available.width() * BaseConstant.paramW2)
+            BaseConstant.paramHeight = int(available.height() * BaseConstant.paramH2)
             rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * BaseConstant.paramX2),
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY2),
-                                int(available.width() * BaseConstant.paramW2),
-                                int(available.height() * BaseConstant.paramH2))
+                                BaseConstant.paramWidth,
+                                BaseConstant.paramHeight)
             self.stackedLayout.setGeometry(rect)
-            pass
         pass
 
     # main 窗口事件
@@ -82,21 +86,27 @@ class MyWindow(QMainWindow):
 
     def setupUi(self, desk):
         stackedLayout = QStackedLayout()
+        available = desk.availableGeometry()
+        center_pointer = available.center()
         self.stackedLayout = stackedLayout
 
+        BaseConstant.paramWidth = int(available.width() * BaseConstant.paramW1)
+        BaseConstant.paramHeight = int(available.height() * BaseConstant.paramH1)
+        BaseConstant.paramX = int(center_pointer.x() - center_pointer.x() * 1.0)
+        BaseConstant.paramY = int(center_pointer.y() - center_pointer.y() * 0.9)
+
         # 创建单独的Widget
-        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(self))
-        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(self))
-        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(self))
+        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(self,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
 
         stackedLayout.setCurrentIndex(1)
         print(int_a, int_b, int_c)
-        available = desk.availableGeometry()
-        center_pointer = available.center()
-        rect = QtCore.QRect(int(center_pointer.x() - center_pointer.x() * 1.0),
-                            int(center_pointer.y() - center_pointer.y() * 0.9),
-                            int(available.width() * 0.7),
-                            int(available.height() * 0.64))
+
+        rect = QtCore.QRect(BaseConstant.paramX,
+                            BaseConstant.paramY,
+                            BaseConstant.paramWidth,
+                            BaseConstant.paramHeight)
         stackedLayout.setGeometry(rect)
         self.setLayout(stackedLayout)
         return [int_a, int_b, int_c]

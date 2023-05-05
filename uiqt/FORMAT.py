@@ -6,13 +6,13 @@ import re as reUtils
 
 class MyWindow(QWidget):
 
-    def __init__(self, parent=None, title=""):
+    def __init__(self, parent=None, title="", width=400, height=400, x=100, y=100):
         super().__init__()
         if parent != None:
             self.setParent(parent)
         self.setWindowTitle(title)
         self.setupUi()
-        self.setGeometry(100, 100, 400, 400)
+        self.setGeometry(x, y, width, height)
         self.show()
 
     def setupUi(self):

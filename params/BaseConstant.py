@@ -11,3 +11,9 @@ paramX2 = 0.99
 paramY2 = 0.9
 paramW2 = 0.98
 paramH2 = 0.9
+
+
+paramWidth = 400
+paramHeight = 400
+paramX = 100
+paramY = 100

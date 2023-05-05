@@ -8,13 +8,13 @@ import re as reUtils
 
 class MyWindow(QWidget):
 
-    def __init__(self, parent=None, title=""):
+    def __init__(self, parent=None, title="", width=400, height=400, x=100, y=100):
         super().__init__()
         if parent != None:
             self.setParent(parent)
         self.setWindowTitle(title)
         self.setupUi()
-        self.setGeometry(100, 100, 400, 400)
+        self.setGeometry(x, y, width, height)
         self.show()
 
     def setupUi(self):
@@ -78,6 +78,7 @@ class MyWindow(QWidget):
             name = reUtils.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
             str1 = reUtils.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
             self.codeMirrorResult.setPlainText(str1)
+
     def to_lower_camel(self):
         """下划线转小驼峰法命名"""
         name = self.codeMirror.toPlainText()
@@ -91,5 +92,5 @@ class MyWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication([])
-    myW = MyWindow("分割器学习")
+    myW = MyWindow(title="分割器学习")
     sysUtils.exit(app.exec_())
