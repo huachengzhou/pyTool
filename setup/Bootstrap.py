@@ -2,7 +2,6 @@ import sys as sysUtils
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QDesktopWidget, QMessageBox,QVBoxLayout,QWidget,QPushButton,QHBoxLayout
 from PyQt5 import QtCore
 from qt_material import apply_stylesheet
-from means import MyFILE, MyFORMAT, MyOFFICE
 from uiqt import MyFILE_UI, MyFORMAT_UI, MyOFFICE_UI
 from params import BaseConstant
 
@@ -31,11 +30,10 @@ class MyWindow(QMainWindow):
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY1),
                                 BaseConstant.paramWidth,
                                 BaseConstant.paramHeight)
-
-            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY, BaseConstant.paramWidth,
-                               BaseConstant.paramHeight / 10)
-            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + 10,
-                               BaseConstant.paramWidth, BaseConstant.paramHeight)
+            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY-50, BaseConstant.paramWidth,
+                                    BaseConstant.paramHeight / 10)
+            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + 10-70,
+                                    BaseConstant.paramWidth, BaseConstant.paramHeight - 80)
             self.stackedLayout.setGeometry(rect)
         else:
             available = self.desk.availableGeometry()
@@ -46,10 +44,10 @@ class MyWindow(QMainWindow):
                                 int(center_pointer.y() - center_pointer.y() * BaseConstant.paramY2),
                                 BaseConstant.paramWidth,
                                 BaseConstant.paramHeight)
-            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY, BaseConstant.paramWidth,
+            self.aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY-50, BaseConstant.paramWidth,
                                     BaseConstant.paramHeight / 10)
-            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + 10,
-                                    BaseConstant.paramWidth, BaseConstant.paramHeight)
+            self.bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 -70,
+                                    BaseConstant.paramWidth, BaseConstant.paramHeight-90)
             self.stackedLayout.setGeometry(rect)
         pass
 
@@ -105,38 +103,49 @@ class MyWindow(QMainWindow):
         bFrame = QWidget(self)
         # aFrame.setStyleSheet("background-color:red;")
         # bFrame.setStyleSheet("background-color:blue;")
-        aFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY,BaseConstant.paramWidth,BaseConstant.paramHeight/10)
-        print(BaseConstant.paramX/6,BaseConstant.paramHeight/10)
-        bFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY+BaseConstant.paramHeight/10+10,BaseConstant.paramWidth,BaseConstant.paramHeight)
+        # aFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY - 50, BaseConstant.paramWidth, BaseConstant.paramHeight / 10)
+        # bFrame.setGeometry(BaseConstant.paramX, BaseConstant.paramY + BaseConstant.paramHeight / 10 + -60, BaseConstant.paramWidth, BaseConstant.paramHeight - 80)
+        aFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY-50,BaseConstant.paramWidth,BaseConstant.paramHeight/10)
+        bFrame.setGeometry(BaseConstant.paramX,BaseConstant.paramY+BaseConstant.paramHeight/10+10-50,BaseConstant.paramWidth,BaseConstant.paramHeight-50)
 
         hBox = QHBoxLayout()
-        for xx in range(1,10):
-            btn1 = QPushButton(str(xx))
-            hBox.addWidget(btn1)
-            hBox.addStretch(2)
-            pass
+
+        btn1 = QPushButton("格式化操作")
+        btn1.setObjectName("0")
+
+        btn2 = QPushButton("文件")
+        btn2.setObjectName("1")
+
+        btn3 = QPushButton("表格处理")
+        btn3.setObjectName("2")
+
+        btn1.clicked.connect(lambda x: self.changeMenuEvent(btn1.objectName(),int(btn1.objectName())))
+        btn2.clicked.connect(lambda x: self.changeMenuEvent(btn2.objectName(),int(btn2.objectName())))
+        btn3.clicked.connect(lambda x: self.changeMenuEvent(btn3.objectName(),int(btn3.objectName())))
+
+        hBox.addWidget(btn1)
+        hBox.addStretch(2)
+        hBox.addWidget(btn2)
+        hBox.addStretch(2)
+        hBox.addWidget(btn3)
+        hBox.addStretch(2)
 
         aFrame.setLayout(hBox)
-        # dssdh
 
         layout = QVBoxLayout()
 
         layout.addWidget(aFrame)
-        # layout.addStretch(1)
         layout.addWidget(bFrame)
-        # layout.addStretch(2)
 
         stackedLayout = QStackedLayout()
         self.stackedLayout = stackedLayout
         self.aFrame = aFrame
         self.bFrame = bFrame
         # 创建单独的Widget
-        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
-        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
-        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight,x=BaseConstant.paramX,y=BaseConstant.paramY))
-
+        int_a = stackedLayout.addWidget(MyFILE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight-50,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_b = stackedLayout.addWidget(MyFORMAT_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight-50,x=BaseConstant.paramX,y=BaseConstant.paramY))
+        int_c = stackedLayout.addWidget(MyOFFICE_UI.MyWindow(bFrame,width=BaseConstant.paramWidth,height=BaseConstant.paramHeight-50,x=BaseConstant.paramX,y=BaseConstant.paramY))
         stackedLayout.setCurrentIndex(1)
-        print(int_a, int_b, int_c)
 
         rect = QtCore.QRect(BaseConstant.paramX,
                             BaseConstant.paramY,
@@ -151,19 +160,7 @@ class MyWindow(QMainWindow):
     def setupMean(self):
         menubar = self.menuBar()
 
-        meanA = MyFILE.toMean(self)
-        meanA.triggered.connect(lambda checked: self.changeMenuEvent(checked, 0))
-        menubar.addMenu(meanA)
 
-        meanB = MyFORMAT.toMean(self)
-        meanB.triggered.connect(lambda checked: self.changeMenuEvent(checked, 1))
-        menubar.addMenu(meanB)
-
-        meanC = MyOFFICE.toMean(self)
-        meanC.triggered.connect(lambda checked: self.changeMenuEvent(checked, 2))
-        menubar.addMenu(meanC)
-
-        print(meanA, meanB, meanC)
 
     def changeMenuEvent(self, state, currentIndex):
         if MyWindow.typeCount == 1:
@@ -174,6 +171,7 @@ class MyWindow(QMainWindow):
             pass
         self.stackedLayout.setCurrentIndex(currentIndex)
         print("changeMenuEvent", state)
+
 
     pass
 
